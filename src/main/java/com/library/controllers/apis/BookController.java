@@ -1,4 +1,4 @@
-package com.library.controllers;
+package com.library.controllers.apis;
 
 import com.library.dto.BookDTO;
 import com.library.services.BookService;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class BookController {
@@ -21,14 +22,19 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.getAllBooks());
     }
 
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<BookDTO> findBook(@PathVariable final Long bookId) {
+        return ResponseEntity.ok(this.bookService.findById(bookId));
+    }
+
     @PostMapping("/create-book")
     public ResponseEntity<BookDTO> createBook(@RequestBody final BookDTO bookDTO) {
         return ResponseEntity.ok(this.bookService.createBook(bookDTO));
     }
 
-    @PostMapping("/update-book/{bookId}")
-    public ResponseEntity<BookDTO> updateBook(@PathVariable("bookId") final Long bookId, @RequestBody final BookDTO bookDTO) {
-        return ResponseEntity.ok(this.bookService.updateBook(bookId, bookDTO));
+    @PutMapping("/update-book")
+    public ResponseEntity<BookDTO> updateBook(@RequestBody final BookDTO bookDTO) {
+        return ResponseEntity.ok(this.bookService.updateBook(bookDTO));
     }
 
     @DeleteMapping("/delete-book/{bookId}")

@@ -12,8 +12,11 @@ import com.library.services.BookService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -39,14 +42,21 @@ public class BookServiceImpl implements BookService {
                 return new BadRequestException(ErrorMessage.BOOK_CATEGORY_NOT_FOUND);
             });
         }));
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            IOUtils.copy(bookDTO.getBookImage().getInputStream(), outputStream);
+        } catch (IOException e) {
+
+        }
         Book book = this.bookMapper.toEntity(bookDTO);
+        book.setImage(outputStream.toByteArray());
         Book createdBook = this.bookRepository.save(book);
         return this.bookMapper.toDTO(createdBook);
     }
 
     @Override
-    public BookDTO updateBook(Long bookId, BookDTO bookDTO) {
-        BookDTO existingBookDTO = findById(bookId);
+    public BookDTO updateBook(BookDTO bookDTO) {
+        BookDTO existingBookDTO = findById(bookDTO.getBookId());
         BookDTO updatedBookDTO = this.bookMapper.update(bookDTO, existingBookDTO);
         Book updatedBook = this.bookRepository.save(this.bookMapper.toEntity(updatedBookDTO));
         return this.bookMapper.toDTO(updatedBook);
@@ -69,4 +79,14 @@ public class BookServiceImpl implements BookService {
         Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new BadRequestException(ErrorMessage.BOOK_NOT_FOUND));
         return this.bookMapper.toDTO(book);
     }
+
+    @Override
+    public byte[] getBookImage(Long bookId) {
+        BookDTO bookDTO = findById(bookId);
+        Book book = this.bookMapper.toEntity(bookDTO);
+        byte[] bookImage = book.getImage();
+        return bookImage;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.library.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class BookDTO {
     private Long bookId;
     private String title;
     private String description;
-    private byte[] image;
+    private MultipartFile bookImage;
     private AuthorDTO author;
     private List<CategoryDTO> categories;
 }
