@@ -11,7 +11,6 @@ public class BookDTO {
     private Long bookId;
     private String title;
     private String description;
-    private MultipartFile bookImage;
     private AuthorDTO author;
     private List<CategoryDTO> categories;
 }

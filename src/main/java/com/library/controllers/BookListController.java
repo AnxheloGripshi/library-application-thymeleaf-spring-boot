@@ -21,14 +21,14 @@ public class BookListController {
 
     @GetMapping("/books")
     public String showBooksList(Model model) {
-        List<BookDTO> books = bookService.getAllBooks();
+        List<BookDTO> books = this.bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "test";
+        return "books-list.";
     }
 
-    @GetMapping("image-book/{bookId}")
-    public void getBookImage(@PathVariable final Long bookId, HttpServletResponse response) throws IOException {
-        byte[] bookImage = bookService.getBookImage(bookId);
+    @GetMapping("/image-book/{bookId}")
+    public void getBookImage(@PathVariable("bookId") final Long bookId, HttpServletResponse response) throws IOException {
+        byte[] bookImage = this.bookService.getBookImage(bookId);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         response.setHeader("Cache-Control", "max-age=2628000");
         try (OutputStream out = response.getOutputStream()) {

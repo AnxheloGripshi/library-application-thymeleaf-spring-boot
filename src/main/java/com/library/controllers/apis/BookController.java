@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.findById(bookId));
     }
 
-    @PostMapping("/create-book")
+    @PostMapping(value = "/create-book")
     public ResponseEntity<BookDTO> createBook(@RequestBody final BookDTO bookDTO) {
         return ResponseEntity.ok(this.bookService.createBook(bookDTO));
     }
@@ -40,6 +41,12 @@ public class BookController {
     @DeleteMapping("/delete-book/{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable("bookId") final Long bookId) {
         this.bookService.deleteBook(bookId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload-image/{bookId}")
+    public ResponseEntity<Void> uploadImage(@PathVariable("bookId") final Long bookId, @RequestParam("image") final MultipartFile image){
+        this.bookService.uploadBookImage(bookId,image);
         return ResponseEntity.ok().build();
     }
 

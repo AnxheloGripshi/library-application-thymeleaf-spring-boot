@@ -17,6 +17,7 @@ public class Book {
     private Long bookId;
     private String title;
     private String description;
+    @Lob
     private byte[] image;
 
     @ManyToOne
