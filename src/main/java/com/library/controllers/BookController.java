@@ -1,4 +1,4 @@
-package com.library.controllers.apis;
+package com.library.controllers;
 
 import com.library.dto.BookDTO;
 import com.library.services.BookService;
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class BookController {

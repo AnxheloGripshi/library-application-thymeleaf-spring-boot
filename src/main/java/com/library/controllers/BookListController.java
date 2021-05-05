@@ -23,7 +23,7 @@ public class BookListController {
     public String showBooksList(Model model) {
         List<BookDTO> books = this.bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "books-list.";
+        return "books-list";
     }
 
     @GetMapping("/image-book/{bookId}")

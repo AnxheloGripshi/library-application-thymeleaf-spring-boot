@@ -1,4 +1,4 @@
-package com.library.controllers.apis;
+package com.library.controllers;
 
 import com.library.dto.CategoryDTO;
 import com.library.services.CategoryService;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class CategoryController {
