@@ -43,12 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().authorizeRequests().
-                antMatchers("/login","/","/books").permitAll()
+                antMatchers("/login","/","/books","/resources/**").permitAll()
                 .antMatchers("http://localhost:4200/**").authenticated()
                 .and().exceptionHandling().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
         http.cors();
     }
 }

@@ -30,7 +30,6 @@ public class BookListController {
     public void getBookImage(@PathVariable("bookId") final Long bookId, HttpServletResponse response) throws IOException {
         byte[] bookImage = this.bookService.getBookImage(bookId);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        response.setHeader("Cache-Control", "max-age=2628000");
         try (OutputStream out = response.getOutputStream()) {
             out.write(bookImage);
         }
