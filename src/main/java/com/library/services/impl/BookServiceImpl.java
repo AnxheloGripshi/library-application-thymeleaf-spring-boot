@@ -83,7 +83,7 @@ public class BookServiceImpl implements BookService {
         try {
             IOUtils.copy(image.getInputStream(), outputStream);
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         Book book = this.bookMapper.toEntity(bookDTO);
         book.setImage(outputStream.toByteArray());

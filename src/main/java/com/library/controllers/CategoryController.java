@@ -25,4 +25,10 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
     }
+
+    @DeleteMapping("/delete-category/{categoryId}")
+    public ResponseEntity<Void> deleteBook(@PathVariable("categoryId") final Long bookId) {
+        this.categoryService.deleteCategory(bookId);
+        return ResponseEntity.ok().build();
+    }
 }
