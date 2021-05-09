@@ -1,6 +1,7 @@
 package com.library.controllers;
 
 import com.library.dto.AuthorDTO;
+import com.library.dto.BookDTO;
 import com.library.services.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,22 @@ public class AuthorController {
     @PostMapping("/create-author")
     public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO authorDTO) {
         return ResponseEntity.ok(authorService.createAuthor(authorDTO));
+    }
+
+    @PutMapping("/update-author")
+    public ResponseEntity<AuthorDTO> updateAuthor(@RequestBody final AuthorDTO authorDTO) {
+        return ResponseEntity.ok(this.authorService.updateAuthor(authorDTO));
+    }
+
+    @GetMapping("/author/{authorId}")
+    public ResponseEntity<AuthorDTO> findAuthor(@PathVariable final Long authorId) {
+        return ResponseEntity.ok(this.authorService.findById(authorId));
+    }
+
+    @DeleteMapping("/delete-author/{authorId}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable("authorId") final Long authorId) {
+        this.authorService.deleteAuthor(authorId);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -1,7 +1,10 @@
 package com.library.services.impl;
 
 import com.library.dto.AuthorDTO;
+import com.library.dto.BookDTO;
 import com.library.entities.Author;
+import com.library.errors.BadRequestException;
+import com.library.errors.ErrorMessage;
 import com.library.mappers.AuthorMapper;
 import com.library.repositories.AuthorRepository;
 import com.library.services.AuthorService;
@@ -29,8 +32,28 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public AuthorDTO updateAuthor(AuthorDTO authorDTO) {
+        AuthorDTO existingAuthorDTO = findById(authorDTO.getAuthorId());
+        AuthorDTO updatedAuthorDTO = this.authorMapper.update(authorDTO, existingAuthorDTO);
+        Author updatedAuthor = this.authorRepository.save(this.authorMapper.toEntity(updatedAuthorDTO));
+        return this.authorMapper.toDTO(updatedAuthor);
+    }
+
+    @Override
+    public AuthorDTO findById(Long authorId) {
+        Author author = this.authorRepository.findById(authorId).orElseThrow(() -> new BadRequestException(ErrorMessage.BOOK_NOT_FOUND));
+        return this.authorMapper.toDTO(author);
+    }
+
+    @Override
     public List<AuthorDTO> getAllAuthors() {
         List<Author> authors = this.authorRepository.findAll();
         return this.authorMapper.toListDTO(authors);
+    }
+
+    @Override
+    public void deleteAuthor(Long authorId) {
+        AuthorDTO existingAuthor = findById(authorId);
+        this.authorRepository.delete(this.authorMapper.toEntity(existingAuthor));
     }
 }
