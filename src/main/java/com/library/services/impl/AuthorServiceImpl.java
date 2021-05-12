@@ -1,12 +1,12 @@
 package com.library.services.impl;
 
 import com.library.dto.AuthorDTO;
-import com.library.dto.BookDTO;
 import com.library.entities.Author;
 import com.library.errors.BadRequestException;
 import com.library.errors.ErrorMessage;
 import com.library.mappers.AuthorMapper;
 import com.library.repositories.AuthorRepository;
+import com.library.repositories.BookRepository;
 import com.library.services.AuthorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,8 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
+
+    private final BookRepository bookRepository;
 
     private final AuthorMapper authorMapper;
 
@@ -53,6 +55,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthor(Long authorId) {
+        this.bookRepository.findByAuthorId(authorId).forEach(book -> {
+            book.setAuthor(null);
+            this.bookRepository.save(book);
+        });
         AuthorDTO existingAuthor = findById(authorId);
         this.authorRepository.delete(this.authorMapper.toEntity(existingAuthor));
     }
